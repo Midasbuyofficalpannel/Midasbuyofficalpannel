@@ -1,77 +1,273 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Midasbuy Offical Panel</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Midasbuy Official Panel — Demo</title>
   <style>
-    body {
-      background-color: #0a0a0a;
-      color: #ffffff;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 50px;
+    :root{
+      --bg:#071023; --card:#0f1622; --muted:#9fb0c3; --accent:#00e5ff;
+      --glass: rgba(255,255,255,0.03);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     }
-    h1 {
-      color: #00ffff;
-      font-size: 2.5em;
-      margin-bottom: 30px;
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100vh; background:linear-gradient(180deg,#060913 0%, #071225 100%);
+      color:#e6f3fb; display:flex; align-items:center; justify-content:center; padding:28px;
     }
-    .packages {
-      display: inline-block;
-      text-align: left;
-      margin-top: 20px;
+    .wrap{width:100%; max-width:980px;}
+    header{
+      text-align:center; margin-bottom:18px;
     }
-    .package {
-      background-color: #1e1e1e;
-      padding: 15px 20px;
-      margin: 10px 0;
-      border-radius: 10px;
+    h1{
+      margin:0; font-size:28px; color:var(--accent); text-shadow: 0 6px 30px rgba(0, 229, 255, 0.06);
+      letter-spacing: -0.3px;
     }
-    .package h2 {
-      margin: 0;
-      color: #00ffff;
+    .disclaimer{
+      margin-top:8px; color:var(--muted); font-size:13px;
+      background:rgba(255,255,255,0.02); padding:8px 12px; border-radius:8px; display:inline-block;
     }
-    .package p {
-      margin: 5px 0;
+
+    .grid{
+      display:grid; grid-template-columns: 1fr 360px; gap:20px;
+      align-items:start;
     }
-    .package a {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 8px 15px;
-      background-color: #00ffff;
-      color: #000;
-      text-decoration: none;
-      border-radius: 5px;
+
+    .main-card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:20px; border-radius:12px; box-shadow: 0 8px 30px rgba(2,6,23,0.6);
     }
-    .package a:hover {
-      background-color: #00c3ff;
+
+    .row{display:flex; gap:12px; flex-wrap:wrap}
+    .package{
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+      border-radius:10px; padding:14px; width:calc(50% - 8px);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .package h3{margin:0 0 8px 0; color:var(--accent)}
+    .price{font-weight:700; font-size:18px; margin:6px 0; color:#dffcff}
+    .meta{color:var(--muted); font-size:13px}
+    .buy-btn{
+      margin-top:10px; display:inline-block; padding:8px 12px; border-radius:8px;
+      background:linear-gradient(90deg,var(--accent),#00c3ff); color:#012; font-weight:700;
+      text-decoration:none; cursor:pointer; border:none;
+      transition:transform .12s ease;
+    }
+    .buy-btn:hover{transform:translateY(-3px)}
+    .side-panel{
+      background:var(--card); padding:18px; border-radius:12px; border:1px solid rgba(255,255,255,0.02);
+    }
+    .side-panel h4{margin:0 0 8px 0; color:var(--accent)}
+    .small{color:var(--muted); font-size:13px}
+
+    footer{margin-top:16px; text-align:center; color:var(--muted); font-size:13px}
+
+    /* Modal */
+    .modal-backdrop{
+      position:fixed; inset:0; display:none; align-items:center; justify-content:center;
+      background:linear-gradient(90deg, rgba(0,0,0,0.6), rgba(0,0,0,0.75)); z-index:40;
+    }
+    .modal{
+      width:100%; max-width:520px; background:#060914; border-radius:12px; padding:18px; border:1px solid rgba(255,255,255,0.04);
+      box-shadow:0 30px 80px rgba(0,0,0,0.6);
+      color:#eaf9ff;
+    }
+    .modal h3{margin:0 0 10px 0; color:var(--accent)}
+    .progress{
+      height:14px; background:rgba(255,255,255,0.04); border-radius:999px; overflow:hidden; margin-top:12px;
+    }
+    .progress > i{display:block; height:100%; width:0%; background:linear-gradient(90deg,#00e5ff,#00c3ff)}
+    .steps{display:flex; gap:8px; margin-top:12px; flex-wrap:wrap}
+    .step{padding:6px 8px; border-radius:8px; font-size:13px; color:var(--muted); background:rgba(255,255,255,0.02)}
+    .step.active{background:linear-gradient(90deg,#022 60%, #022); color:#bffaff; box-shadow:0 6px 20px rgba(0,229,255,0.06)}
+    .ok{margin-top:12px; padding:10px 12px; background:linear-gradient(90deg,#00ffb0,#00e5ff); color:#002; border-radius:8px; display:inline-block; text-decoration:none}
+
+    @media(max-width:880px){
+      .grid{grid-template-columns:1fr}
+      .package{width:100%}
     }
   </style>
 </head>
 <body>
+  <div class="wrap">
+    <header>
+      <h1>Midasbuy Official Panel</h1>
+      <div class="disclaimer">Demo / Showcase only — Not affiliated with Midasbuy or Tencent</div>
+    </header>
 
-  <h1>Midasbuy UC Panel</h1>
+    <div class="grid">
+      <section class="main-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+          <div>
+            <div class="small">Game</div>
+            <h2 style="margin:4px 0 0 0">PUBG Mobile — UC Packages</h2>
+            <div class="small" style="margin-top:6px">Prices shown in USDT (demo). No real payments processed here.</div>
+          </div>
+          <div style="text-align:right">
+            <div class="small">Server</div>
+            <div style="font-weight:700">Asia</div>
+          </div>
+        </div>
 
-  <div class="packages">
-    <div class="package">
-      <h2>Basic</h2>
-      <p>20000 UC — $24.99</p>
-      <a href="https://www.midasbuy.com" target="_blank">Buy Now</a>
+        <div style="margin-top:16px" class="row">
+          <div class="package">
+            <h3>Starter</h3>
+            <div class="meta">7000 UC</div>
+            <div class="price">USDT 10</div>
+            <button class="buy-btn" data-uc="7000" data-price="10">Buy Now</button>
+          </div>
+
+          <div class="package">
+            <h3>Standard</h3>
+            <div class="meta">20000 UC</div>
+            <div class="price">USDT 25</div>
+            <button class="buy-btn" data-uc="20000" data-price="25">Buy Now</button>
+          </div>
+
+          <div class="package">
+            <h3>Premium</h3>
+            <div class="meta">50000 UC</div>
+            <div class="price">USDT 50</div>
+            <button class="buy-btn" data-uc="50000" data-price="50">Buy Now</button>
+          </div>
+
+          <div style="width:100%; margin-top:6px; color:var(--muted); font-size:13px">
+            Tip: This is a <strong>demo</strong> UI. For real purchases, always use the official Midasbuy site.
+          </div>
+        </div>
+      </section>
+
+      <aside class="side-panel">
+        <h4>How demo works</h4>
+        <p class="small">Click a package's Buy button — the page will simulate processing and show an order result. No money changes hands.</p>
+
+        <div style="margin-top:12px">
+          <div class="small">Quick Links</div>
+          <ul style="padding-left:14px; margin-top:8px; line-height:1.7;">
+            <li><a href="https://www.midasbuy.com" target="_blank" style="color:var(--accent); text-decoration:none">Official Midasbuy</a></li>
+            <li><a href="https://www.pubg.com" target="_blank" style="color:var(--accent); text-decoration:none">PUBG Global</a></li>
+          </ul>
+        </div>
+      </aside>
     </div>
 
-    <div class="package">
-      <h2>Standard</h2>
-      <p>50000 UC — $49.99</p>
-      <a href="https://www.midasbuy.com" target="_blank">Buy Now</a>
-    </div>
+    <footer>
+      <div class="small">Made for demo / learning. Do not use for real sales or to impersonate any company.</div>
+    </footer>
+  </div>
 
-    <div class="package">
-      <h2>Premium</h2>
-      <p>100000 UC — $74.99</p>
-      <a href="https://www.midasbuy.com" target="_blank">Buy Now</a>
+  <!-- Modal (processing demo) -->
+  <div class="modal-backdrop" id="modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <h3 id="modal-title">Processing your order…</h3>
+      <div id="modal-desc" class="small" style="opacity:0.9">Initializing</div>
+
+      <div class="progress" aria-hidden="true" style="margin-top:12px;">
+        <i id="bar"></i>
+      </div>
+
+      <div class="steps" id="steps">
+        <div class="step" data-step="1">Preparing</div>
+        <div class="step" data-step="2">Verifying</div>
+        <div class="step" data-step="3">Processing</div>
+        <div class="step" data-step="4">Finalizing</div>
+      </div>
+
+      <div id="result" style="margin-top:12px; display:none">
+        <div style="font-weight:700; margin-bottom:6px">Order Complete ✅</div>
+        <div class="small" id="order-info">Order # — </div>
+        <a class="ok" id="done-btn" href="https://www.midasbuy.com" target="_blank">Go to official store</a>
+      </div>
     </div>
   </div>
 
+  <script>
+    // Demo processing simulation (client-side only)
+    const modal = document.getElementById('modal');
+    const bar = document.getElementById('bar');
+    const stepsEls = document.querySelectorAll('.step');
+    const desc = document.getElementById('modal-desc');
+    const result = document.getElementById('result');
+    const orderInfo = document.getElementById('order-info');
+    const doneBtn = document.getElementById('done-btn');
+
+    function rndId(){
+      const a = Math.random().toString(36).slice(2,8).toUpperCase();
+      const b = Math.random().toString(36).slice(2,6).toUpperCase();
+      return a + '-' + b;
+    }
+
+    function openModal(uc, price){
+      // reset
+      modal.style.display = 'flex';
+      bar.style.width = '0%';
+      stepsEls.forEach(s => { s.classList.remove('active'); });
+      result.style.display = 'none';
+      desc.textContent = `Processing demo: ${uc} UC — USDT ${price}`;
+      doneBtn.href = 'https://www.midasbuy.com';
+      // simulate progress
+      let pct = 0;
+      const orderId = rndId();
+      const stepTimes = [1000, 1800, 2300, 1200]; // durations per stage
+      let step = 0;
+
+      function nextStep(){
+        if(step >= stepsEls.length){
+          // finished
+          bar.style.width = '100%';
+          desc.textContent = 'Order completed (demo)';
+          orderInfo.textContent = `Order ID (demo): ${orderId} • ${uc} UC • USDT ${price}`;
+          result.style.display = 'block';
+          return;
+        }
+        // activate step
+        stepsEls[step].classList.add('active');
+        // animate partial increase in progress during this step
+        const duration = stepTimes[step];
+        const start = pct;
+        const end = Math.min(100, start + Math.round((1/(stepsEls.length)) * 100));
+        const startTs = Date.now();
+        function frame(){
+          const now = Date.now();
+          const elapsed = now - startTs;
+          const t = Math.min(1, elapsed / duration);
+          const current = start + Math.round((end - start) * t);
+          bar.style.width = current + '%';
+          if(t < 1){
+            requestAnimationFrame(frame);
+          } else {
+            // next step after small delay
+            step++;
+            setTimeout(nextStep, 350);
+          }
+        }
+        frame();
+      }
+
+      // begin
+      setTimeout(nextStep, 300);
+    }
+
+    // attach buttons
+    document.querySelectorAll('.buy-btn').forEach(btn=>{
+      btn.addEventListener('click', function(){
+        const uc = this.dataset.uc;
+        const price = this.dataset.price;
+        openModal(uc, price);
+      });
+    });
+
+    // close modal when clicking outside modal box
+    document.getElementById('modal').addEventListener('click', function(e){
+      if(e.target === this){
+        this.style.display = 'none';
+      }
+    });
+
+    // keyboard Escape closes
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape') modal.style.display = 'none';
+    });
+  </script>
 </body>
 </html>
